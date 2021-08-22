@@ -1,5 +1,7 @@
 package com.example.schoolupdaterapp.menu;
 
+import android.widget.Button;
+
 public class EntityModelClass {
 
     private String entityName;

@@ -6,4 +6,10 @@
     <string name="entity_name">Entity Name</string>
     <string name="value_1">Value 1</string>
     <string name="value_2">Value 2</string>
+    <string name="edit">Edit</string>
+    <string name="more">More</string>
+    <string name="delete">Delete</string>
+    <string name="add_institution">Add Institution</string>
+    <string name="add_course">Add Course</string>
+    <string name="add_student">Add Student</string>
 </resources>
