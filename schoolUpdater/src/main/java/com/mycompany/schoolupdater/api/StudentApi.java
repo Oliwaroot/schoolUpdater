@@ -6,6 +6,7 @@
 package com.mycompany.schoolupdater.api;
 
 import com.mycompany.schoolupdater.ejb.StudentBean;
+import com.mycompany.schoolupdater.requests.ChangeCourseRequest;
 import com.mycompany.schoolupdater.requests.FilterBy;
 import com.mycompany.schoolupdater.requests.StudenAddRequest;
 import com.mycompany.schoolupdater.requests.StudentEditRequest;
@@ -53,6 +54,18 @@ public class StudentApi {
     @POST
     public Response getStudentByCourse(FilterBy getStudentByCourse){
         return studentBean.getStudents_ByCourse(getStudentByCourse);
+    }
+    
+    @Path("/changeCourse")
+    @POST
+    public Response changeStudentCourse(ChangeCourseRequest changeCourseRequest){
+        return studentBean.changeStudentCourse(changeCourseRequest);
+    }
+    
+    @Path("/changeCourseInstitution")
+    @POST
+    public Response changeStudentCourseINstitution(ChangeCourseRequest changeCourseRequest){
+        return studentBean.changeStudentCourseInstitution(changeCourseRequest);
     }
     
     @DELETE

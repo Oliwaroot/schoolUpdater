@@ -5,12 +5,14 @@ D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\sc
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\org\netbeans\rest\application\config\ApplicationConfig.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\requests\StudenAddRequest.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\requests\AddInstitutionRequest.java
+D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\requests\ChangeCourseRequest.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\requests\AddCourseRequest.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\ejb\InstitutionBean.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\ejb_db\InstitutionDatabaseBean.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\api\InstitutionApi.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\ejb_db\StudentDatabaseBean.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\api\StudentApi.java
+D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\requests\FilterBy.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\requests\StudentEditRequest.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\api\CourseApi.java
 D:\Documents\Projects\SchoolUpdater\schoolUpdater\src\main\java\com\mycompany\schoolupdater\ejb\CourseBean.java

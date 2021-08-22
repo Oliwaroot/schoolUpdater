@@ -11,6 +11,7 @@ import com.mycompany.schoolupdater.ejb_db.StudentDatabaseBean;
 import com.mycompany.schoolupdater.entities.Courses;
 import com.mycompany.schoolupdater.entities.Students;
 import com.mycompany.schoolupdater.jpa.TransactionProvider;
+import com.mycompany.schoolupdater.requests.ChangeCourseRequest;
 import com.mycompany.schoolupdater.requests.FilterBy;
 import com.mycompany.schoolupdater.requests.StudenAddRequest;
 import com.mycompany.schoolupdater.requests.StudentEditRequest;
@@ -64,6 +65,92 @@ public class StudentBean {
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
+        }
+    }
+    
+    public Response changeStudentCourse(ChangeCourseRequest changeCourseRequest){
+        try {
+            if (changeCourseRequest == null) {
+                throw new BadRequestException("Change Course Request is empty");
+            }
+            Integer studentId =  changeCourseRequest.getStudentId();
+            Integer courseId = changeCourseRequest.getCourseId();
+            
+            Students existingStudent = studentDatatbaseBean.getStudent_ById(studentId);
+            Courses oldCourse = courseDatabaseBean.getCourse_ById(existingStudent.getCourse().getId());
+            Courses existingCourse = courseDatabaseBean.getCourse_ById(courseId);
+            
+            if(existingStudent == null){
+                throw new BadRequestException("Student does not exist.");
+            }
+            
+            if(existingCourse == null){
+               throw new BadRequestException("Course does not exist.");
+            }
+            
+            if(existingCourse.getInstitution() != oldCourse.getInstitution()){
+                throw new BadRequestException("Cannot transfer student outside institution.");
+            } 
+            
+            existingStudent.setCourse(existingCourse);
+            
+            if (!transactionProvider.updateEntity(existingStudent)) {
+                throw new PersistenceException("Student has been not been deleted");
+            }
+            
+            HashMap<String, Object> res = new HashMap<>();
+            res.put("Message", "Student has been transfered to a new course.");
+            return Response.status(Response.Status.OK).entity(res).build();
+        } catch (BadRequestException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (PersistenceException e) {
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred.").build();
+        }
+    }
+    
+    public Response changeStudentCourseInstitution(ChangeCourseRequest changeCourseRequest){
+        try {
+            if (changeCourseRequest == null) {
+                throw new BadRequestException("Change Instittion Request is empty");
+            }
+            Integer studentId =  changeCourseRequest.getStudentId();
+            Integer courseId = changeCourseRequest.getCourseId();
+            
+            Students existingStudent = studentDatatbaseBean.getStudent_ById(studentId);
+            Courses oldCourse = courseDatabaseBean.getCourse_ById(existingStudent.getCourse().getId());
+            Courses existingCourse = courseDatabaseBean.getCourse_ById(courseId);
+            
+            if(existingStudent == null){
+                throw new BadRequestException("Student does not exist.");
+            }
+            
+            if(existingCourse == null){
+               throw new BadRequestException("Course does not exist.");
+            }
+            
+            if(existingCourse.getInstitution() == oldCourse.getInstitution()){
+                throw new BadRequestException("Transfer is to be out of the institution.");
+            } 
+            
+            existingStudent.setCourse(existingCourse);
+            
+            if (!transactionProvider.updateEntity(existingStudent)) {
+                throw new PersistenceException("Student has been not been deleted");
+            }
+            
+            HashMap<String, Object> res = new HashMap<>();
+            res.put("Message", "Student has been transfered to a new course in a new institution.");
+            return Response.status(Response.Status.OK).entity(res).build();
+        } catch (BadRequestException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (PersistenceException e) {
+            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred.").build();
         }
     }
 
