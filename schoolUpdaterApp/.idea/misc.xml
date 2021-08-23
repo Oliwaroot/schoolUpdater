@@ -7,11 +7,29 @@
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.12604166666666666" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout-v23/entity_item.xml" value="0.17708333333333334" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/add_course.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/add_dialog.xml" value="0.2" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/add_institution.xml" value="0.2" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/add_student.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/change_course.xml" value="0.75" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/change_institution.xml" value="0.22" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/course_item.xml" value="0.17300724637681159" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/courses_fragment.xml" value="0.10916919959473151" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/delete_course.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/delete_institution.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/delete_student.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/edit_course.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/edit_institution.xml" value="0.17300724637681159" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/edit_student.xml" value="0.17300724637681159" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/entity_item.xml" value="0.33" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/failure.xml" value="0.17300724637681159" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/institutions_fragment.xml" value="0.2995135510771369" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/student_item.xml" value="0.33" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/students_fragment.xml" value="0.10916919959473151" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/success.xml" value="0.18" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/layout/test.xml" value="0.17300724637681159" />
         <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/menu/bottom_nav.xml" value="0.221025641025641" />
+        <entry key="..\:/Documents/Projects/schoolUpdaterApp/app/src/main/res/xml/network_security_config.xml" value="0.16893115942028986" />
       </map>
     </option>
   </component>

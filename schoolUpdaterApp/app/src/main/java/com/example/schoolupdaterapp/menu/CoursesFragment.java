@@ -42,7 +42,7 @@ public class CoursesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v2 = inflater.inflate(R.layout.courses_fragment,container,false);
         recyclerView2 = (RecyclerView) v2.findViewById(R.id.course_recycler);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(getContext(),courseModel);
+        CourseRecyclerViewAdapter recyclerViewAdapter = new CourseRecyclerViewAdapter(getContext(),courseModel);
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView2.setAdapter(recyclerViewAdapter);
         return v2;

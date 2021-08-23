@@ -41,7 +41,7 @@ public class StudentsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v3 = inflater.inflate(R.layout.students_fragment,container,false);
         recyclerView3 = (RecyclerView) v3.findViewById(R.id.student_recycler);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(getContext(),studentModel);
+        StudentRecyclerViewAdapter recyclerViewAdapter = new StudentRecyclerViewAdapter(getContext(),studentModel);
         recyclerView3.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView3.setAdapter(recyclerViewAdapter);
         return v3;

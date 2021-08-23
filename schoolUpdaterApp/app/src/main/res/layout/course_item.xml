@@ -59,7 +59,7 @@
 
             <LinearLayout
                 android:id="@+id/expandableLinear"
-
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:foregroundTint="@color/design_default_color_primary_dark"
                 android:layout_height="wrap_content"
