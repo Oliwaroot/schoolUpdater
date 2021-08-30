@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">schoolUpdaterApp</string>
+    <string name="app_name">Z-Uni</string>
     <string name="bottom_nav_institutions">Institutions</string>
     <string name="bottom_nav_courses">Courses</string>
     <string name="bottom_nav_students">Students</string>
@@ -44,4 +44,6 @@
     <string name="change_school">Change School</string>
     <string name="institution_2">Institution:</string>
     <string name="course">Course</string>
+    <string name="filter_by_course">Filter By Course</string>
+    <string name="filter_by_institution">Filter By Institution</string>
 </resources>

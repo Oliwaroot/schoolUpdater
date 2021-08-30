@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.schoolupdaterapp.R;
 import com.example.schoolupdaterapp.menu.institutionactions.GetInstitutionDataModel;
+import com.example.schoolupdaterapp.menu.studentactions.GetStudentsDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +132,43 @@ public class CourseRecyclerViewAdapter extends RecyclerView.Adapter<CourseRecycl
     public Filter getFilter() {
         return searchFilter;
     }
+
+    public Filter getQueryFilter2(){ return queryFilter2; }
+
+    private Filter queryFilter2 = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<GetCoursesDataModel> filteredList = new ArrayList<>();
+
+            if(charSequence == "All"){
+                if(eClassesFull != null){
+                    filteredList.addAll(eClassesFull);
+                }
+            }
+            else{
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for(GetCoursesDataModel model : eClassesFull){
+                    if(model.getInstitutionName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(model);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if(((ArrayList<?>) filterResults.values).size() > 0){
+                eClasses.clear();
+                eClasses.addAll((ArrayList<GetCoursesDataModel>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        }
+    };
 
     private Filter searchFilter = new Filter() {
         @Override

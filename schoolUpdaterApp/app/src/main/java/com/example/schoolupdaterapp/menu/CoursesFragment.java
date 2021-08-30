@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.schoolupdaterapp.R;
 import com.example.schoolupdaterapp.menu.courseactions.AddCourseCustomDialog;
@@ -21,6 +24,7 @@ import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +42,7 @@ public class CoursesFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     static CourseRecyclerViewAdapter recyclerViewAdapter2;
     private static ArrayList<GetCoursesDataModel> courseModel;
+    private static Spinner spinner2;
 
     public CoursesFragment() {
     }
@@ -48,6 +53,7 @@ public class CoursesFragment extends Fragment {
         v2 = inflater.inflate(R.layout.courses_fragment,container,false);
         recyclerView2 = (RecyclerView) v2.findViewById(R.id.course_recycler);
         floatingActionButton = v2.findViewById(R.id.floating_add_course);
+        spinner2 = (Spinner) v2.findViewById(R.id.courses_inst_spinner);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -60,6 +66,19 @@ public class CoursesFragment extends Fragment {
         courseModel = new ArrayList<GetCoursesDataModel>();
         recyclerViewAdapter2 = new CourseRecyclerViewAdapter(getContext(),courseModel);
         getAllCourseData();
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                recyclerViewAdapter2.getQueryFilter2().filter((CharSequence) adapterView.getItemAtPosition(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         setHasOptionsMenu(true);
         return v2;
     }
@@ -77,7 +96,18 @@ public class CoursesFragment extends Fragment {
                     assert response.body() != null;
                     courseModel = responseMethod.getCourses();
                     recyclerViewAdapter2.seteClasses(courseModel);
-                    Log.i("log","instMod"+courseModel.size());
+
+                    List<String> list2 = new ArrayList<String>();
+                    list2.add("All");
+                    for (int i = 0; i < courseModel.size(); i++) {
+                        if (!list2.contains(recyclerViewAdapter2.geteClasses().get(i).getInstitutionName())) {
+                            list2.add(recyclerViewAdapter2.geteClasses().get(i).getInstitutionName());
+                        }
+                    }
+                    ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(recyclerView2.getContext(), android.R.layout.simple_spinner_item, list2);
+                    arrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner2.setAdapter(arrayAdapter2);
+
                     recyclerView2.setAdapter(recyclerViewAdapter2);
 
                 }

@@ -2,6 +2,7 @@ package com.example.schoolupdaterapp.menu.studentactions;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,6 +160,79 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
     public Filter getFilter() {
         return searchFilter;
     }
+
+    public Filter getQueryFilter() { return queryFilter; }
+
+    public Filter getQueryFilter2(){ return queryFilter2; }
+
+    private Filter queryFilter2 = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<GetStudentsDataModel> filteredList = new ArrayList<>();
+
+            if(charSequence == "All"){
+                if(eClassesFull != null){
+                    filteredList.addAll(eClassesFull);
+                }
+            }
+            else{
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for(GetStudentsDataModel model : eClassesFull){
+                    if(model.getInstitution().toLowerCase().contains(filterPattern)){
+                        filteredList.add(model);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if(((ArrayList<?>) filterResults.values).size() > 0){
+                eClasses.clear();
+                eClasses.addAll((ArrayList<GetStudentsDataModel>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        }
+    };
+
+    private Filter queryFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            ArrayList<GetStudentsDataModel> filteredList = new ArrayList<>();
+
+            if(charSequence == "All"){
+                if(eClassesFull != null){
+                    filteredList.addAll(eClassesFull);
+                }
+            }
+            else{
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+
+                for(GetStudentsDataModel model : eClassesFull){
+                    if(model.getCourseName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(model);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            if(((ArrayList<?>) filterResults.values).size() > 0){
+                eClasses.clear();
+                eClasses.addAll((ArrayList<GetStudentsDataModel>) filterResults.values);
+                notifyDataSetChanged();
+            }
+        }
+    };
 
     private Filter searchFilter = new Filter() {
         @Override

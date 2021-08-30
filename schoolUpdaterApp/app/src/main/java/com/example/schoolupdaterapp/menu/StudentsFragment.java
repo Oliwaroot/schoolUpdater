@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.example.schoolupdaterapp.R;
 import com.example.schoolupdaterapp.menu.courseactions.AddCourseCustomDialog;
@@ -23,7 +26,10 @@ import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +47,8 @@ public class StudentsFragment extends Fragment {
     static StudentRecyclerViewAdapter recyclerViewAdapter3;
     private FloatingActionButton floatingActionButton;
     private static ArrayList<GetStudentsDataModel> studentModel;
+    private static Spinner spinner;
+    private static Spinner spinner2;
 
     public StudentsFragment() {
     }
@@ -48,15 +56,17 @@ public class StudentsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v3 = inflater.inflate(R.layout.students_fragment,container,false);
+        v3 = inflater.inflate(R.layout.students_fragment, container, false);
         recyclerView3 = (RecyclerView) v3.findViewById(R.id.student_recycler);
         floatingActionButton = (FloatingActionButton) v3.findViewById(R.id.floating_add_student);
+        spinner = (Spinner) v3.findViewById(R.id.students_spinner);
+        spinner2 = (Spinner) v3.findViewById(R.id.students_inst_spinner);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener(){
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AddStudentCustomDialog dialog = new AddStudentCustomDialog();
-                dialog.show(getChildFragmentManager(),"Custom Dialog 3");
+                dialog.show(getChildFragmentManager(), "Custom Dialog 3");
             }
         });
 
@@ -66,6 +76,37 @@ public class StudentsFragment extends Fragment {
         recyclerViewAdapter3 = new StudentRecyclerViewAdapter(getContext(), studentModel);
 //        recyclerView3.setAdapter(recyclerViewAdapter);
         getAllStudentData();
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if((CharSequence) adapterView.getItemAtPosition(i) == "All"){
+                    recyclerViewAdapter3.getQueryFilter2().filter("All");
+                }
+                recyclerViewAdapter3.getQueryFilter().filter((CharSequence) adapterView.getItemAtPosition(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if((CharSequence) adapterView.getItemAtPosition(i) == "All"){
+                    recyclerViewAdapter3.getQueryFilter().filter("All");
+                }
+                recyclerViewAdapter3.getQueryFilter2().filter((CharSequence) adapterView.getItemAtPosition(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return v3;
     }
 
@@ -75,13 +116,34 @@ public class StudentsFragment extends Fragment {
         call.enqueue(new Callback<StudentResponseMethod>() {
             @Override
             public void onResponse(Call<StudentResponseMethod> call, Response<StudentResponseMethod> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     //StudentRecyclerViewAdapter recyclerViewAdapter = new StudentRecyclerViewAdapter(getContext(),studentModel);
                     StudentResponseMethod responseMethod = response.body();
                     assert responseMethod != null;
                     assert response.body() != null;
                     studentModel = responseMethod.getStudents();
                     recyclerViewAdapter3.seteClasses(studentModel);
+                    List<String> list = new ArrayList<String>();
+                    list.add("All");
+                    for (int i = 0; i < studentModel.size(); i++) {
+                        if (!list.contains(recyclerViewAdapter3.geteClasses().get(i).getCourseName())) {
+                            list.add(recyclerViewAdapter3.geteClasses().get(i).getCourseName());
+                        }
+                    }
+                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(recyclerView3.getContext(), android.R.layout.simple_spinner_item, list);
+                    arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(arrayAdapter);
+
+                    List<String> list2 = new ArrayList<String>();
+                    list2.add("All");
+                    for (int i = 0; i < studentModel.size(); i++) {
+                        if (!list2.contains(recyclerViewAdapter3.geteClasses().get(i).getInstitution())) {
+                            list2.add(recyclerViewAdapter3.geteClasses().get(i).getInstitution());
+                        }
+                    }
+                    ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(recyclerView3.getContext(), android.R.layout.simple_spinner_item, list2);
+                    arrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner2.setAdapter(arrayAdapter2);
 //                    Log.i("log","instMod"+courseModel.size());
                     recyclerView3.setAdapter(recyclerViewAdapter3);
 
