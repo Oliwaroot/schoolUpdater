@@ -9,16 +9,14 @@ package com.mycompany.schoolupdater.requests;
  *
  * @author OliwaPC
  */
-public class ChangeCourseRequest {
+public class DeleteCourseRequest {
     private Integer id;
-    private String course;
 
-    public ChangeCourseRequest() {
+    public DeleteCourseRequest() {
     }
 
-    public ChangeCourseRequest(Integer id, String course) {
+    public DeleteCourseRequest(Integer id) {
         this.id = id;
-        this.course = course;
     }
 
     public Integer getId() {
@@ -28,14 +26,5 @@ public class ChangeCourseRequest {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getCourse() {
-        return course;
-    }
-
-    public void setCourse(String course) {
-        this.course = course;
-    }
-    
     
 }

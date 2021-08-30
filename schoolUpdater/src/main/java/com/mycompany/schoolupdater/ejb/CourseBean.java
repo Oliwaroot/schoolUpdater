@@ -11,6 +11,7 @@ import com.mycompany.schoolupdater.entities.Courses;
 import com.mycompany.schoolupdater.entities.Institutions;
 import com.mycompany.schoolupdater.jpa.TransactionProvider;
 import com.mycompany.schoolupdater.requests.AddCourseRequest;
+import com.mycompany.schoolupdater.requests.DeleteCourseRequest;
 import com.mycompany.schoolupdater.requests.EditCourseRequest;
 import com.mycompany.schoolupdater.requests.FilterBy;
 import java.util.ArrayList;
@@ -40,12 +41,12 @@ public class CourseBean {
     CourseDatabaseBean courseDatabaseBean;
  
     
-       public Response deleteCourse(Integer courseId) {
+       public Response deleteCourse(DeleteCourseRequest deleteCourseRequest) {
         try {
-            if (courseId == null) {
+            if (deleteCourseRequest == null || deleteCourseRequest.getId() == null) {
                 throw new BadRequestException("Id is empty");
             }
-            Courses course = courseDatabaseBean.getCourse_ById(courseId);
+            Courses course = courseDatabaseBean.getCourse_ById(deleteCourseRequest.getId());
             if(course == null){
                 throw new BadRequestException("Course does not exist");
             }
@@ -72,15 +73,15 @@ public class CourseBean {
                 throw new BadRequestException("Course is empty");
             }
             String courseName = addCourseRequest.getName();
-            Integer institutionId = addCourseRequest.getInstitution();
+            String institutionName = addCourseRequest.getInstitution();
             
-            Institutions existingInstitution  = institutionDatabaseBean.getInstitution_ById(institutionId);
+            Institutions existingInstitution  = institutionDatabaseBean.getInstitution_ByName(institutionName);
             if(existingInstitution == null){
                throw new BadRequestException("Institution does not exist.");
             }
             
             Courses existingCourse = courseDatabaseBean.getCourses_ByName(courseName);
-            if(existingCourse != null && Objects.equals(existingCourse.getInstitution().getId(), institutionId)){
+            if(existingCourse != null && Objects.equals(existingCourse.getInstitution().getInstitutionName(), institutionName)){
                 throw new BadRequestException("Course already exists.");
             }
             
@@ -164,8 +165,10 @@ public class CourseBean {
                 for(Courses course : courseList){
                     HashMap<String, Object> courseHashMap = new HashMap();
                     courseHashMap.put("name", course.getCourseName());
-                    courseHashMap.put("institution", course.getInstitution().getInstitutionName());
-                    courses.add(courseHashMap);
+                    courseHashMap.put("id", course.getId().toString());
+                    courseHashMap.put("institution", course.getInstitution().getId().toString());
+                    courseHashMap.put("institutionName", course.getInstitution().getInstitutionName());
+                    courses.add(courseHashMap); 
                 }
                 res.put("Courses", courses);
             }

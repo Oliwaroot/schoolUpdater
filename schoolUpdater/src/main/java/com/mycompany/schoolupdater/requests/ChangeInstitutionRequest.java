@@ -9,26 +9,17 @@ package com.mycompany.schoolupdater.requests;
  *
  * @author OliwaPC
  */
-public class StudenAddRequest {
-    
-    private String name;
-    private String course;
-    private String institution;
-    
-    public StudenAddRequest(){}
+public class ChangeInstitutionRequest {
+    Integer id;
+    String course;
+    String institution;
 
-    public StudenAddRequest(String name, String course, String institution) {
-        this.name = name;
-        this.course = course;
-        this.institution = institution;
+    public Integer getId() {
+        return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCourse() {
@@ -46,6 +37,14 @@ public class StudenAddRequest {
     public void setInstitution(String institution) {
         this.institution = institution;
     }
-    
+
+    public ChangeInstitutionRequest(Integer id, String course, String institution) {
+        this.id = id;
+        this.course = course;
+        this.institution = institution;
+    }
+
+    public ChangeInstitutionRequest() {
+    }
     
 }

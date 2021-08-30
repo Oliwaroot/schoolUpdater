@@ -11,7 +11,7 @@ package com.mycompany.schoolupdater.requests;
  */
 public class AddCourseRequest {
     private String name;
-    private Integer institution;
+    private String institution;
 
     public String getName() {
         return name;
@@ -21,15 +21,15 @@ public class AddCourseRequest {
         this.name = name;
     }
 
-    public Integer getInstitution() {
+    public String getInstitution() {
         return institution;
     }
 
-    public void setInstitution(Integer institution) {
+    public void setInstitution(String institution) {
         this.institution = institution;
     }
 
-    public AddCourseRequest(String name, Integer institution) {
+    public AddCourseRequest(String name, String institution) {
         this.name = name;
         this.institution = institution;
     }

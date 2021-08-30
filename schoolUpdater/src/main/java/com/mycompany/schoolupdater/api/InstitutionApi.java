@@ -7,7 +7,9 @@ package com.mycompany.schoolupdater.api;
 
 import com.mycompany.schoolupdater.ejb.InstitutionBean;
 import com.mycompany.schoolupdater.requests.AddInstitutionRequest;
+import com.mycompany.schoolupdater.requests.DeleteInstitutionRequest;
 import com.mycompany.schoolupdater.requests.EditInstitutionRequest;
+import com.mycompany.schoolupdater.requests.GetSingleInstRequest;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
@@ -47,8 +49,10 @@ public class InstitutionApi {
         return institutionBean.addInstitution(addInstitutionRequest);
     }
     
-    @DELETE
-    public Response deleteInstitution(@QueryParam("institution_id")Integer institutionId) {
-        return institutionBean.deleteInstitution(institutionId);
+    @Path("/deleteInstitution")
+    @POST
+    public Response deleteInstitution(DeleteInstitutionRequest deleteInstitutionRequest) {
+        return institutionBean.deleteInstitution(deleteInstitutionRequest);
     }
+    
 }

@@ -9,7 +9,9 @@ import com.mycompany.schoolupdater.ejb_db.InstitutionDatabaseBean;
 import com.mycompany.schoolupdater.entities.Institutions;
 import com.mycompany.schoolupdater.jpa.TransactionProvider;
 import com.mycompany.schoolupdater.requests.AddInstitutionRequest;
+import com.mycompany.schoolupdater.requests.DeleteInstitutionRequest;
 import com.mycompany.schoolupdater.requests.EditInstitutionRequest;
+import com.mycompany.schoolupdater.requests.GetSingleInstRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +35,12 @@ public class InstitutionBean {
     @EJB
     InstitutionDatabaseBean institutionDatabaseBean;    
     
-       public Response deleteInstitution(Integer institutionId) {
+       public Response deleteInstitution(DeleteInstitutionRequest deleteInstitutionRequest) {
         try {
-            if (institutionId == null) {
+            if (deleteInstitutionRequest == null || deleteInstitutionRequest.getId() == null) {
                 throw new BadRequestException("Id is empty");
             }
-            Institutions institution = institutionDatabaseBean.getInstitution_ById(institutionId);
+            Institutions institution = institutionDatabaseBean.getInstitution_ById(deleteInstitutionRequest.getId());
             if(institution == null){
                 throw new BadRequestException("Institution does not exist.");
             }
@@ -74,9 +76,9 @@ public class InstitutionBean {
             
             if (!transactionProvider.createEntity(institution)) {
                 throw new PersistenceException("Institution has not been saved");
-            }
+            }   
             HashMap<String, Object> res = new HashMap<>();
-            res.put("Message", "Institution " + institution.getInstitutionName() + " has been created");
+            res.put("name", "Institution " + institution.getInstitutionName() + " has been created");
             return Response.status(Response.Status.OK).entity(res).build();
         } catch (BadRequestException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -89,8 +91,11 @@ public class InstitutionBean {
     }
      
     public Response editInstitution(EditInstitutionRequest editInstitutionRequest) {
+        HashMap<String, Object> res = new HashMap<>();
         try {
+           
                 if(editInstitutionRequest == null){
+                    res.put("Message", "Institution is empty");
                     throw new BadRequestException("Institution is empty");
                 }
                 Integer institutionId = editInstitutionRequest.getId();
@@ -98,10 +103,12 @@ public class InstitutionBean {
                 
                 Institutions existingInstitution = institutionDatabaseBean.getInstitution_ById(institutionId);
                 if(existingInstitution == null){
+                    res.put("Message", "The institution does not exist.");
                     throw new BadRequestException("The institution does not exist.");
                 }
                 Institutions existingInstitution2 = institutionDatabaseBean.getInstitution_ByName(institutionName);
                 if(existingInstitution2 != null){
+                    res.put("Message", "Institution already exists.");
                     throw new BadRequestException("Institution already exists.");
                 }
                 Institutions institution = new Institutions();
@@ -109,38 +116,22 @@ public class InstitutionBean {
                 institution.setInstitutionName(institutionName);
                 
             if (!transactionProvider.updateEntity(institution)) {
+                res.put("Message", "Institution has not been updated");
                 throw new PersistenceException("Institution has not been updated");
             }
-            HashMap<String, Object> res = new HashMap<>();
+            
             res.put("Message", "Institution " + institution.getInstitutionName() + " has been updated");
             return Response.status(Response.Status.OK).entity(res).build();
         } catch (BadRequestException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(res).build();
         } catch (PersistenceException e) {
-            return Response.status(Response.Status.FORBIDDEN).entity(e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity(res).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("An error occurred").build();
         }
     }
     
-    public List<String> getInstitutionsByName(){
-        List<Institutions> institutionList = institutionDatabaseBean.getAllInstitutions();
-        List institutions = new ArrayList();
-        for(Institutions institution : institutionList){
-                    institutions.add(institution.getInstitutionName());
-        }
-        return institutions;
-    }
-    
-    public List<Integer> getInstitutionsById(){
-        List<Institutions> institutionList = institutionDatabaseBean.getAllInstitutions();
-        List institutions = new ArrayList();
-        for(Institutions institution : institutionList){
-                    institutions.add(institution.getId());
-        }
-        return institutions;
-    }
     
     public Response getAllInstitutions(){
         try{
@@ -154,6 +145,7 @@ public class InstitutionBean {
                 for(Institutions institution : institutionList){
                     HashMap<String, Object> institutionHashMap = new HashMap();
                     institutionHashMap.put("name", institution.getInstitutionName());
+                    institutionHashMap.put("id", institution.getId().toString());
                     institutions.add(institutionHashMap);
                 }
                 res.put("Institutions", institutions);

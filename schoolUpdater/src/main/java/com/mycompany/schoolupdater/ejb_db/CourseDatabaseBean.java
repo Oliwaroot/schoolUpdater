@@ -68,6 +68,22 @@ public class CourseDatabaseBean {
             return course;
         }
     }
+          
+          public Courses getCourses_ByNameAndIns(String courseName, Integer institutionId) {
+            Courses course = null;
+        try {
+            EntityManager entityManager = transactionProvider.getEM();
+            Query query = entityManager.createQuery("SELECT c FROM Courses c WHERE c.courseName = :courseName AND c.institution.id = :institutionId");
+            query.setParameter("institutionId", institutionId);
+            query.setParameter("courseName", courseName);
+            course = transactionProvider.getSingleResult(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return course;
+        }
+    }
+          
           public List<Courses> getCoursesByInstitution(Integer institutionId){
             List courseList = new ArrayList();
             

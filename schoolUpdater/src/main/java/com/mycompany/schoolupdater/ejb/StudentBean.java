@@ -9,9 +9,12 @@ import com.mycompany.schoolupdater.ejb_db.CourseDatabaseBean;
 import com.mycompany.schoolupdater.ejb_db.InstitutionDatabaseBean;
 import com.mycompany.schoolupdater.ejb_db.StudentDatabaseBean;
 import com.mycompany.schoolupdater.entities.Courses;
+import com.mycompany.schoolupdater.entities.Institutions;
 import com.mycompany.schoolupdater.entities.Students;
 import com.mycompany.schoolupdater.jpa.TransactionProvider;
 import com.mycompany.schoolupdater.requests.ChangeCourseRequest;
+import com.mycompany.schoolupdater.requests.ChangeInstitutionRequest;
+import com.mycompany.schoolupdater.requests.DeleteStudentRequest;
 import com.mycompany.schoolupdater.requests.FilterBy;
 import com.mycompany.schoolupdater.requests.StudenAddRequest;
 import com.mycompany.schoolupdater.requests.StudentEditRequest;
@@ -43,12 +46,12 @@ public class StudentBean {
     @EJB
     InstitutionDatabaseBean institutionDatabaseBean;
 
-    public Response deleteStudent(Integer studentId) {
+    public Response deleteStudent(DeleteStudentRequest deleteStudentRequest) {
         try {
-            if (studentId == null) {
+            if (deleteStudentRequest == null || deleteStudentRequest.getId() == null) {
                 throw new BadRequestException("Id is empty");
             }
-            Students student = studentDatatbaseBean.getStudent_ById(studentId);
+            Students student = studentDatatbaseBean.getStudent_ById(deleteStudentRequest.getId());
             if(student == null){
                 throw new BadRequestException("Student does not exist");
             }
@@ -73,12 +76,12 @@ public class StudentBean {
             if (changeCourseRequest == null) {
                 throw new BadRequestException("Change Course Request is empty");
             }
-            Integer studentId =  changeCourseRequest.getStudentId();
-            Integer courseId = changeCourseRequest.getCourseId();
+            Integer studentId =  changeCourseRequest.getId();
+            String courseName = changeCourseRequest.getCourse();
             
             Students existingStudent = studentDatatbaseBean.getStudent_ById(studentId);
             Courses oldCourse = courseDatabaseBean.getCourse_ById(existingStudent.getCourse().getId());
-            Courses existingCourse = courseDatabaseBean.getCourse_ById(courseId);
+            Courses existingCourse = courseDatabaseBean.getCourses_ByNameAndIns(courseName, existingStudent.getCourse().getInstitution().getId());
             
             if(existingStudent == null){
                 throw new BadRequestException("Student does not exist.");
@@ -86,6 +89,10 @@ public class StudentBean {
             
             if(existingCourse == null){
                throw new BadRequestException("Course does not exist.");
+            }
+            
+            if(oldCourse == existingCourse){
+                throw new BadRequestException("Cannot transfer to the same course");
             }
             
             if(existingCourse.getInstitution() != oldCourse.getInstitution()){
@@ -111,17 +118,20 @@ public class StudentBean {
         }
     }
     
-    public Response changeStudentCourseInstitution(ChangeCourseRequest changeCourseRequest){
+    public Response changeStudentCourseInstitution(ChangeInstitutionRequest changeCourseRequest){
         try {
             if (changeCourseRequest == null) {
                 throw new BadRequestException("Change Instittion Request is empty");
             }
-            Integer studentId =  changeCourseRequest.getStudentId();
-            Integer courseId = changeCourseRequest.getCourseId();
+            Integer studentId =  changeCourseRequest.getId();
+            String courseName = changeCourseRequest.getCourse();
+            String institutionName = changeCourseRequest.getInstitution();
+            
+            Institutions newInstitution = institutionDatabaseBean.getInstitution_ByName(institutionName);
             
             Students existingStudent = studentDatatbaseBean.getStudent_ById(studentId);
             Courses oldCourse = courseDatabaseBean.getCourse_ById(existingStudent.getCourse().getId());
-            Courses existingCourse = courseDatabaseBean.getCourse_ById(courseId);
+            Courses existingCourse = courseDatabaseBean.getCourses_ByNameAndIns(courseName, newInstitution.getId());
             
             if(existingStudent == null){
                 throw new BadRequestException("Student does not exist.");
@@ -160,9 +170,15 @@ public class StudentBean {
                 throw new BadRequestException("Student is empty");
             }
             String studentName = studentRequest.getName();
-            Integer courseId = studentRequest.getCourse();
+            String courseName = studentRequest.getCourse();
+            String institutionName = studentRequest.getInstitution();
             
-            Courses existingCourse = courseDatabaseBean.getCourse_ById(courseId);
+            Institutions existingInstitution = institutionDatabaseBean.getInstitution_ByName(institutionName);
+            if(existingInstitution == null){
+               throw new BadRequestException("Course does not exist.");
+            }
+            
+            Courses existingCourse = courseDatabaseBean.getCourses_ByNameAndIns(courseName, existingInstitution.getId());
             if(existingCourse == null){
                throw new BadRequestException("Course does not exist.");
             }
@@ -252,7 +268,10 @@ public class StudentBean {
                 for (Students student : studentList) {
                     HashMap<String, Object> courseHashMap = new HashMap();
                     courseHashMap.put("name", student.getStudentName());
-                    courseHashMap.put("course", student.getCourse().getCourseName());
+                    courseHashMap.put("id", student.getId());
+                    courseHashMap.put("course", student.getCourse().getId().toString());
+                    courseHashMap.put("courseName", student.getCourse().getCourseName());
+                    courseHashMap.put("institution", student.getCourse().getInstitution().getInstitutionName());
                     students.add(courseHashMap);
                 }
                 res.put("Students", students);

@@ -7,6 +7,8 @@ package com.mycompany.schoolupdater.api;
 
 import com.mycompany.schoolupdater.ejb.StudentBean;
 import com.mycompany.schoolupdater.requests.ChangeCourseRequest;
+import com.mycompany.schoolupdater.requests.ChangeInstitutionRequest;
+import com.mycompany.schoolupdater.requests.DeleteStudentRequest;
 import com.mycompany.schoolupdater.requests.FilterBy;
 import com.mycompany.schoolupdater.requests.StudenAddRequest;
 import com.mycompany.schoolupdater.requests.StudentEditRequest;
@@ -64,13 +66,14 @@ public class StudentApi {
     
     @Path("/changeCourseInstitution")
     @POST
-    public Response changeStudentCourseINstitution(ChangeCourseRequest changeCourseRequest){
+    public Response changeStudentCourseINstitution(ChangeInstitutionRequest changeCourseRequest){
         return studentBean.changeStudentCourseInstitution(changeCourseRequest);
     }
     
-    @DELETE
-    public Response deleteStudent(@QueryParam("student_id")Integer studentId) {
-        return studentBean.deleteStudent(studentId);
+    @Path("/deleteStudent")
+    @POST
+    public Response deleteStudent(DeleteStudentRequest deleteStudentRequest) {
+        return studentBean.deleteStudent(deleteStudentRequest);
     }
     
 }
