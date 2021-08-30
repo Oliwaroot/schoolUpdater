@@ -19,7 +19,7 @@
             android:textColor="@color/white"
             android:textSize="30sp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editNumber"
             android:layout_width="242dp"
             android:layout_height="wrap_content"
@@ -27,10 +27,9 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="30dp"
-            android:hint="@string/course_id"
+            android:text="@string/confirm_deletion"
             android:importantForAutofill="no"
-            android:inputType="number"
-            android:minHeight="48dp" />
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +38,7 @@
             android:background="@color/design_default_color_primary">
 
             <Button
-                android:id="@+id/delete_button"
+                android:id="@+id/delete_course_button"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

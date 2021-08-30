@@ -38,4 +38,10 @@
     <string name="change_institution">Change Institution</string>
     <string name="success">Success</string>
     <string name="failure">Failure</string>
+    <string name="confirm_deletion">Confirm Deletion?</string>
+    <string name="institution">Institution:</string>
+    <string name="search">Search</string>
+    <string name="change_school">Change School</string>
+    <string name="institution_2">Institution:</string>
+    <string name="course">Course</string>
 </resources>
