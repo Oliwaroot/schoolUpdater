@@ -22,7 +22,9 @@ import com.example.schoolupdaterapp.retrofit.ApiInterface;
 import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,8 +41,9 @@ public class InstitutionsFragment extends Fragment {
     View v;
     private static RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
-    static InstitutionRecyclerViewAdapter recyclerViewAdapter;
+    public static InstitutionRecyclerViewAdapter recyclerViewAdapter;
     private static ArrayList<GetInstitutionDataModel> institutionModels;
+    public static ArrayList<String> institutionNames;
     AlertDialog dialog;
 
     public InstitutionsFragment() {
@@ -92,9 +95,10 @@ public class InstitutionsFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         institutionModels = new ArrayList<GetInstitutionDataModel>();
+        institutionNames = new ArrayList<>();
         recyclerViewAdapter = new InstitutionRecyclerViewAdapter(getContext(),institutionModels);
+
         getAllData();
-        setHasOptionsMenu(true);
         return v;
     }
 
@@ -105,12 +109,15 @@ public class InstitutionsFragment extends Fragment {
             @Override
             public void onResponse(Call<InstitutionResponseMethod> call, Response<InstitutionResponseMethod> response) {
                 if(response.isSuccessful()){
-                    //InstitutionRecyclerViewAdapter recyclerViewAdapter = new InstitutionRecyclerViewAdapter(getContext(),institutionModels);
                     InstitutionResponseMethod responseMethod = response.body();
                     assert responseMethod != null;
                     assert response.body() != null;
                     institutionModels = responseMethod.getResponseMethods();
                     recyclerViewAdapter.seteClasses(institutionModels);
+
+                    for(int i = 0; i<institutionModels.size(); i++){
+                        institutionNames.add(institutionModels.get(i).getName());
+                    }
                     recyclerView.setAdapter(recyclerViewAdapter);
                 }
             }
@@ -130,14 +137,18 @@ public class InstitutionsFragment extends Fragment {
         call.enqueue(new Callback<AddInstitutionDataModel>() {
             @Override
             public void onResponse(Call<AddInstitutionDataModel> call, Response<AddInstitutionDataModel> response) {
-                if(response.code() == 400){
-                    Toast.makeText(getActivity(), "Institution Already Exists", Toast.LENGTH_SHORT).show();
-                }
                 if(response.code() == 200){
                     Toast.makeText(getActivity(), "Institution Added Successfully", Toast.LENGTH_SHORT).show();
                     getAllData();
                     //call adapter and get items list, add item to list
                     //notifyItemAdded (index of last item in list)
+                }
+                else{
+                    try {
+                        Toast.makeText(getActivity(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 dialog.dismiss();
             }

@@ -24,6 +24,7 @@ import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -36,13 +37,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.schoolupdaterapp.menu.InstitutionsFragment.institutionNames;
+import static com.example.schoolupdaterapp.menu.courseactions.AddCourseCustomDialog.spinnerInstitution;
+
 public class CoursesFragment extends Fragment {
     View v2;
-    private static RecyclerView recyclerView2;
+    public static RecyclerView recyclerView2;
     private FloatingActionButton floatingActionButton;
-    static CourseRecyclerViewAdapter recyclerViewAdapter2;
-    private static ArrayList<GetCoursesDataModel> courseModel;
+    public static CourseRecyclerViewAdapter recyclerViewAdapter2;
+    public static ArrayList<GetCoursesDataModel> courseModel;
     private static Spinner spinner2;
+    public static ArrayList<String> courseList;
 
     public CoursesFragment() {
     }
@@ -64,6 +69,7 @@ public class CoursesFragment extends Fragment {
         });
         recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
         courseModel = new ArrayList<GetCoursesDataModel>();
+        courseList = new ArrayList<>();
         recyclerViewAdapter2 = new CourseRecyclerViewAdapter(getContext(),courseModel);
         getAllCourseData();
 
@@ -97,17 +103,17 @@ public class CoursesFragment extends Fragment {
                     courseModel = responseMethod.getCourses();
                     recyclerViewAdapter2.seteClasses(courseModel);
 
+                    for (int i=0; i<courseModel.size(); i++){
+                        courseList.add(recyclerViewAdapter2.geteClasses().get(i).getInstitutionName() +" " +
+                                recyclerViewAdapter2.geteClasses().get(i).getName());
+                    }
+
                     List<String> list2 = new ArrayList<String>();
                     list2.add("All");
-                    for (int i = 0; i < courseModel.size(); i++) {
-                        if (!list2.contains(recyclerViewAdapter2.geteClasses().get(i).getInstitutionName())) {
-                            list2.add(recyclerViewAdapter2.geteClasses().get(i).getInstitutionName());
-                        }
-                    }
+                    list2.addAll(institutionNames);
                     ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(recyclerView2.getContext(), android.R.layout.simple_spinner_item, list2);
                     arrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner2.setAdapter(arrayAdapter2);
-
                     recyclerView2.setAdapter(recyclerViewAdapter2);
 
                 }

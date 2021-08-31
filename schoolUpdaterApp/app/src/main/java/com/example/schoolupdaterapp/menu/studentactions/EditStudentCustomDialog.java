@@ -13,6 +13,8 @@ import com.example.schoolupdaterapp.menu.courseactions.EditCourseDataModel;
 import com.example.schoolupdaterapp.retrofit.ApiInterface;
 import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 
+import java.io.IOException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -79,7 +81,11 @@ public class EditStudentCustomDialog extends DialogFragment {
                     getAllStudentData();
                 }
                 else{
-                    Toast.makeText(getActivity(), "Failed to edit. Student Already Exists.", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 getDialog().dismiss();
             }

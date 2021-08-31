@@ -17,21 +17,22 @@
             <Spinner
                 android:background="@color/white"
                 android:id="@+id/courses_inst_spinner"
-                android:layout_width="250dp"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="14dp"
                 android:layout_marginRight="10dp"
                 android:minHeight="25dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="18dp"
+                app:drawableLeftCompat="@drawable/ic_baseline_filter_alt_24"
+                android:minHeight="25dp"
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:text="@string/filter_by_institution"/>
+                android:layout_marginLeft="5dp"
+                />
 
         </LinearLayout>
 

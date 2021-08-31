@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.schoolupdaterapp.R;
-import com.example.schoolupdaterapp.menu.EntityModelClass;
 import com.example.schoolupdaterapp.menu.courseactions.DeleteCourseCustomDialog;
 import com.example.schoolupdaterapp.menu.courseactions.EditCourseCustomDialog;
 import com.example.schoolupdaterapp.menu.institutionactions.GetInstitutionDataModel;
@@ -41,7 +40,6 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
         eClassesFull = new ArrayList<>(eClasses);
     }
 
-//    Dialog myDialog;
 
     public StudentRecyclerViewAdapter(Context mContext, ArrayList<GetStudentsDataModel> eClasses) {
         this.mContext = mContext;
@@ -86,7 +84,8 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
             @Override
             public void onClick(View view) {
                 String newVal = eClasses.get(holder.getBindingAdapterPosition()).getId();
-                ChangeCourseCustomDialog dialog = new ChangeCourseCustomDialog(newVal);
+                String insVal = eClasses.get(holder.getBindingAdapterPosition()).getInstitution();
+                ChangeCourseCustomDialog dialog = new ChangeCourseCustomDialog(newVal, insVal);
                 dialog.show(((AppCompatActivity)mContext).getSupportFragmentManager(),"Custom Dialog 3");
             }
         });
@@ -165,9 +164,12 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
 
     public Filter getQueryFilter2(){ return queryFilter2; }
 
+    public ArrayList<GetStudentsDataModel> filteredList2 = new ArrayList<>();
+
     private Filter queryFilter2 = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
+            filteredList2.clear();
             ArrayList<GetStudentsDataModel> filteredList = new ArrayList<>();
 
             if(charSequence == "All"){
@@ -183,6 +185,7 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
                         filteredList.add(model);
                     }
                 }
+                filteredList2.addAll(filteredList);
             }
 
             FilterResults results = new FilterResults();
@@ -197,6 +200,10 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
                 eClasses.addAll((ArrayList<GetStudentsDataModel>) filterResults.values);
                 notifyDataSetChanged();
             }
+            else{
+                eClasses.clear();
+                notifyDataSetChanged();
+            }
         }
     };
 
@@ -204,21 +211,19 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             ArrayList<GetStudentsDataModel> filteredList = new ArrayList<>();
-
             if(charSequence == "All"){
-                if(eClassesFull != null){
-                    filteredList.addAll(eClassesFull);
+                if(filteredList2 != null){
+                    filteredList.addAll(filteredList2);
                 }
             }
             else{
                 String filterPattern = charSequence.toString().toLowerCase().trim();
 
-                for(GetStudentsDataModel model : eClassesFull){
+                for(GetStudentsDataModel model : filteredList2){
                     if(model.getCourseName().toLowerCase().contains(filterPattern)){
                         filteredList.add(model);
                     }
-                }
-            }
+                }}
             FilterResults results = new FilterResults();
             results.values = filteredList;
             return results;
@@ -229,6 +234,10 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
             if(((ArrayList<?>) filterResults.values).size() > 0){
                 eClasses.clear();
                 eClasses.addAll((ArrayList<GetStudentsDataModel>) filterResults.values);
+                notifyDataSetChanged();
+            }
+            else{
+                eClasses.clear();
                 notifyDataSetChanged();
             }
         }
@@ -267,6 +276,10 @@ public class StudentRecyclerViewAdapter extends RecyclerView.Adapter<StudentRecy
                 eClasses.addAll((ArrayList<GetStudentsDataModel>) filterResults.values);
                 notifyDataSetChanged();
             }
+//            else{
+//                eClasses.clear();
+//                notifyDataSetChanged();
+//            }
         }
     };
 

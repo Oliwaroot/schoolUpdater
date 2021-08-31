@@ -181,6 +181,10 @@ public class InstitutionRecyclerViewAdapter extends RecyclerView.Adapter<Institu
                 eClasses.addAll((ArrayList<GetInstitutionDataModel>) filterResults.values);
                 notifyDataSetChanged();
             }
+//            else{
+//                eClasses.clear();
+//                notifyDataSetChanged();
+//            }
         }
     };
 }

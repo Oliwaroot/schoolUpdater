@@ -167,6 +167,10 @@ public class CourseRecyclerViewAdapter extends RecyclerView.Adapter<CourseRecycl
                 eClasses.addAll((ArrayList<GetCoursesDataModel>) filterResults.values);
                 notifyDataSetChanged();
             }
+            else{
+                eClasses.clear();
+                notifyDataSetChanged();
+            }
         }
     };
 
@@ -203,6 +207,10 @@ public class CourseRecyclerViewAdapter extends RecyclerView.Adapter<CourseRecycl
                 eClasses.addAll((ArrayList<GetCoursesDataModel>) filterResults.values);
                 notifyDataSetChanged();
             }
+//            else{
+//                eClasses.clear();
+//                notifyDataSetChanged();
+//            }
         }
     };
 

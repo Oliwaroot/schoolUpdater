@@ -11,6 +11,7 @@ import com.example.schoolupdaterapp.R;
 import com.example.schoolupdaterapp.retrofit.ApiInterface;
 import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -72,7 +73,11 @@ public class DeleteInstitutionCustomDialog extends DialogFragment {
                     getAllData();
                 }
                 else{
-                    Toast.makeText(getActivity(), "Error in deletion. Institution has courses.", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 getDialog().dismiss();
             }

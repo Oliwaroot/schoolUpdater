@@ -12,6 +12,8 @@ import com.example.schoolupdaterapp.menu.courseactions.DeleteCourseDataModel;
 import com.example.schoolupdaterapp.retrofit.ApiInterface;
 import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 
+import java.io.IOException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -69,7 +71,11 @@ public class DeleteStudentCustomDialog extends DialogFragment {
                     getAllStudentData();
                 }
                 else{
-                    Toast.makeText(getActivity(), "Error in deletion.", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getActivity(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 getDialog().dismiss();
             }

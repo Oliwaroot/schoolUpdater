@@ -13,6 +13,8 @@ import com.example.schoolupdaterapp.R;
 import com.example.schoolupdaterapp.retrofit.ApiInterface;
 import com.example.schoolupdaterapp.retrofit.RetrofitClient;
 
+import java.io.IOException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -71,15 +73,16 @@ public class EditInstitutionCustomDialog extends DialogFragment {
         call.enqueue(new Callback<EditInstitutionDataModel>() {
             @Override
             public void onResponse(Call<EditInstitutionDataModel> call, Response<EditInstitutionDataModel> response) {
-
-                if(response.code() == 400){
-                    Log.i("NextThing", response.message());
-                    Toast.makeText(getActivity(), "Failed to edit. Institution Exists.", Toast.LENGTH_SHORT).show();
-                }
                 if(response.code() == 200){
-                    Log.i("NextThing", response.body().toString());
                     Toast.makeText(getActivity(), "Institution Edited Successfully", Toast.LENGTH_SHORT).show();
                     getAllData();
+                }
+                else{
+                    try {
+                        Toast.makeText(getActivity(), response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 getDialog().dismiss();
             }

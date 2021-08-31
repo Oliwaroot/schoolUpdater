@@ -17,6 +17,8 @@ import com.example.schoolupdaterapp.menu.StudentsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import static com.example.schoolupdaterapp.menu.InstitutionsFragment.getAllData;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -26,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(navListener);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new CoursesFragment()).commit();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new InstitutionsFragment()).commit();
