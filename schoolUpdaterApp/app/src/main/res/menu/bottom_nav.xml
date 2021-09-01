@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_institutions"
+        android:icon="@drawable/ic_baseline_school_24"
+        android:title="@string/bottom_nav_institutions"/>
+    <item
+        android:id="@+id/nav_courses"
+        android:icon="@drawable/ic_baseline_menu_book_24"
+        android:title="@string/bottom_nav_courses"/>
+    <item
+        android:id="@+id/nav_students"
+        android:icon="@drawable/ic_baseline_people_24"
+        android:title="@string/bottom_nav_students"/>
+
+</menu>
